@@ -1,0 +1,62 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+
+// Функция чтения целочисленного одномерного вектора из файла
+std::vector<int> readIntVectorFromFile(const std::string& filename) {
+    std::vector<int> vec;
+    std::ifstream file(filename);
+    int num;
+
+    while (file >> num) {
+        vec.push_back(num);
+    }
+
+    file.close();
+    return vec;
+}
+
+int main() {
+    // Задание 1: Чтение из файла целочисленного одномерного вектора
+    std::vector<int> intVector = readIntVectorFromFile("data.txt");
+
+    // Задание 2: Реверсирование последовательности элементов вектора
+    std::reverse(intVector.begin(), intVector.end());
+
+    // Задание 3: Поиск минимального элемента в векторе
+    int minElement = *std::min_element(intVector.begin(), intVector.end());
+
+    // Задание 4: Удаление четных элементов из вектора
+    intVector.erase(std::remove_if(intVector.begin(), intVector.end(), [](int num) { return num % 2 == 0; }), intVector.end());
+
+    // Задание 5: Сортировка вектора в убывающем порядке
+    std::sort(intVector.rbegin(), intVector.rend());
+
+    // Задание 6: Вставка произвольного элемента, не нарушая сортировку
+    int randomElement = 10;
+    auto it = std::lower_bound(intVector.begin(), intVector.end(), randomElement, std::greater<int>());
+    intVector.insert(it, randomElement);
+
+    // Задание 7: Определение индекса заданного элемента
+    int targetElement = 5;
+    auto findIt = std::find(intVector.begin(), intVector.end(), targetElement);
+    if (findIt != intVector.end()) {
+        int index = std::distance(intVector.begin(), findIt);
+        std::cout << "Index of element " << targetElement << ": " << index << std::endl;
+    } else {
+        std::cout << "Element " << targetElement << " not found in the vector" << std::endl;
+    }
+
+    // Задание 8: Удаление дублирующихся элементов
+    intVector.erase(std::unique(intVector.begin(), intVector.end()), intVector.end());
+
+    // Вывод измененного вектора
+    std::cout << "Modified vector:\n";
+    for (int num : intVector) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
